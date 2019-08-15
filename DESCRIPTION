@@ -1,0 +1,22 @@
+Package: FlowSorted.Blood.WGBS.BLUEPRINT
+Title: Whole genome bisulfite-sequencing data on sorted 
+    blood cell populations from BLUEPRINT
+Version: 0.99.0
+Authors@R: c(
+    person("Stephanie", "Hicks", role = c("aut", "cre"), 
+            email = "shicks19@jhu.edu", 
+            comment = c(ORCID = "0000-0002-7858-0231")))
+Description: This package measures the DNA methylation of
+    sorted cell types from whole blood (venous and cord) 
+    from the BLUEPRINT consortia using the whole genome 
+    bisulfite-sequencing platform (WGBS). BigWig files
+    were downloaded and converted to HDF5 files. Data 
+    are available on ExperimentHub as a data package.
+License: CC BY 4.0
+Depends: HDF5Array, bsseq
+Imports: AnnotationHub, ExperimentHub
+Suggests: knitr, BiocStyle, snow, BiocFileCache, BiocParallel
+VignetteBuilder: knitr
+biocViews: SequencingData, MethylSeqData, ExperimentHub
+NeedsCompilation: no
+Encoding: UTF-8
