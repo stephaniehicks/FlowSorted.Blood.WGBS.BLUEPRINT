@@ -70,8 +70,11 @@ in R.
 
 
 ```{r}
-getCoverage(bs, type = "Cov")
-getCoverage(bs, type = "M")
+hdf5_cov <- getCoverage(bs, type = "Cov")
+hdf5_meth <- getCoverage(bs, type = "M")
+
+hdf5_cov
+hdf5_meth
 ```
 
 ## Exploring the data
@@ -86,18 +89,20 @@ memory from disk.
 options(DelayedArray.block.size=1e9)
 ```
 
-We are interested in only including CpGs that have at least 
-one read in every sample in the `Cov` matrix. A naive 
+We are interested in removing all CpGs that
+have no coverage in at least one sample, a naive 
 implementation might be
 
 ```{r, eval = FALSE}
-keep_ids <- (DelayedArray::rowSums(hdf5_cov > 0) == 0)
-table(keep_ids)
+keep_ids <- (DelayedArray::rowSums(hdf5_cov == 0) == 0)
+table(keep_ids) 
 ```
 
-Now, we can reduce the size of the object to 
+We see that results in about `r sum(keep_ids) / 1e6` million 
+CpGs. Now, we can reduce the size of the object to 
 ```{r}
-dim(bs[keep_ids,])
+bs.filtered <- bs[keep_ids,]
+bs.filtered
 ```
 
 

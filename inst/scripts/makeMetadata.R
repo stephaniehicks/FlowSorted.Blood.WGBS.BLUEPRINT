@@ -26,7 +26,7 @@ main.data <- data.frame(
 write.csv(file="inst/extdata/metadata.csv", 
           main.data, row.names=FALSE)
 
-#### validated with `ExperimentHubData::makeExperimentHubMetadata()`
-ExperimentHubData::makeExperimentHubMetadata(
-    pathToPackage = "/users/shicks1/myRpkgs/FlowSorted.Blood.WGBS.BLUEPRINT",
-   fileName = "metadata.csv")
+# #### validated with `ExperimentHubData::makeExperimentHubMetadata()`
+# ExperimentHubData::makeExperimentHubMetadata(
+#     pathToPackage = "/users/shicks1/myRpkgs/FlowSorted.Blood.WGBS.BLUEPRINT",
+#    fileName = "metadata.csv")
