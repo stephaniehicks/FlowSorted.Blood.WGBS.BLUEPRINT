@@ -20,3 +20,5 @@ VignetteBuilder: knitr
 biocViews: SequencingData, MethylSeqData, ExperimentHub
 NeedsCompilation: no
 Encoding: UTF-8
+BugReports: https://github.com/stephaniehicks/FlowSorted.Blood.WGBS.BLUEPRINT/
+URL: https://github.com/stephaniehicks/FlowSorted.Blood.WGBS.BLUEPRINT/

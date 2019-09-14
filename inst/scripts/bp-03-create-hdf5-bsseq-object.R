@@ -92,7 +92,7 @@ hdf5_meth[is.na(hdf5_meth)] <- 0
 
 # realize new files on disk
 hdf5_bs_path_clean <- file.path(dataPath, "files_bsseq",
-                          "blueprint_blood_01.h5")
+                          "blueprint_blood.h5")
 hdf5_cov <- writeHDF5Array(x = hdf5_cov,
                            filepath = hdf5_bs_path_clean, name = "cov")
 hdf5_meth <- writeHDF5Array(x = hdf5_meth,
@@ -101,6 +101,10 @@ hdf5_meth <- writeHDF5Array(x = hdf5_meth,
 # remove all mcols from granges object to make small object
 gr_complete <- granges(gr_complete)
 pryr::object_size(gr_complete)
+
+saveRDS(gr_complete,
+        file = file.path(dataPath, "files_bsseq",
+                         "blueprint_blood_gr.RDS"))
 
 # creating pheno table
 pheno_table <- NULL
@@ -135,6 +139,9 @@ pheno_table <- pheno_table[, reorder_ids]
 colnames(pheno_table)[colnames(pheno_table) == "ample_barcode"] <- "sample_barcode"
 rownames(pheno_table) <- pheno_table$sample_name
 
+saveRDS(pheno_table,
+        file = file.path(dataPath, "files_bsseq",
+                         "blueprint_blood_colData.RDS"))
 
 # Creating BSseq object
 bs <- BSseq(gr = gr_complete, 

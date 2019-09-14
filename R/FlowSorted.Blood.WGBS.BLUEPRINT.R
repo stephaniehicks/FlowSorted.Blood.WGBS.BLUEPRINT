@@ -23,6 +23,7 @@
 #' to be exact).
 #' 
 #' @import bsseq
+#' @import ExperimentHub
 #' 
 #' @rdname FlowSorted.Blood.WGBS.BLUEPRINT
 #' 
@@ -31,14 +32,44 @@
 #' fs_wgbs <- FlowSorted.Blood.WGBS.BLUEPRINT()
 #' dim(fs_wgbs)
 #' 
-FlowSorted.Blood.WGBS.BLUEPRINT <- function()
+FlowSorted.Blood.WGBS.BLUEPRINT <- function(preloaded = TRUE)
   {
-    ## Download BSseq object with dense assays (dense assay) and RDS (row and column
-    ## annotations) files from ExperimentHub, compose into a
-    ## Bsseq object.
-    hub <- ExperimentHub()
-    version <- "v1.0.0"
-    base <- file.path("FlowSorted.Blood.WGBS.BLUEPRINT", version, "files_bsseq_hdf5_col")
-    bs <- loadHDF5SummarizedExperiment(base)
-    bs
-  }
+    if(preloaded){
+      ## Download a serialized BSseq object from ExperimentHub
+      hub <- ExperimentHub()
+      version <- "v1.0.0"
+      base <- file.path("FlowSorted.Blood.WGBS.BLUEPRINT", version, "files_bsseq_hdf5_col")
+      bs <- loadHDF5SummarizedExperiment(base)
+    } 
+    
+    if(!preloaded){
+      ## Download HDF5 files and RDS (GRanges and colData) objects, 
+      ## and compose into a BSseq object. 
+      hub <- ExperimentHub()
+      version <- "v1.0.0"
+      base <- file.path("FlowSorted.Blood.WGBS.BLUEPRINT", version, 
+                        "blueprint_blood")
+
+      ## GRanges object and column data
+      rdatapath <- paste0(base, "_gr.rds")
+      gr_object <- query(hub, rdatapath)[[1]]
+    
+      suppressMessages({
+        rdatapath <- paste0(base, "_colData.rds")
+        colData <- query(hub, rdatapath)[[1]]
+      
+        ## HDF5, from ExperimentHub:
+        rdatapath <- paste0(base, ".h5")
+        h5file <- query(hub, rdatapath)[[1]]
+      })
+      hdf5_cov <- HDF5Array(filepath = h5file, name = "cov")
+      hdf5_meth <- HDF5Array(filepath =  h5file, name = "meth")
+    
+      bs <- BSseq(gr = gr_object, 
+                  M = hdf5_meth, 
+                  Cov = hdf5_cov, 
+                  sampleNames = colData$sample_name)
+      pData(bs) <- DataFrame(colData)
+    }
+  bs
+}
