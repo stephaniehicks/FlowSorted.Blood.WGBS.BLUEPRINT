@@ -1,7 +1,7 @@
 Package: FlowSorted.Blood.WGBS.BLUEPRINT
 Title: Whole genome bisulfite-sequencing data on sorted 
     blood cell populations from BLUEPRINT
-Version: 0.99.1
+Version: 0.99.2
 Authors@R: c(
     person("Stephanie", "Hicks", role = c("aut", "cre"), 
             email = "shicks19@jhu.edu", 
