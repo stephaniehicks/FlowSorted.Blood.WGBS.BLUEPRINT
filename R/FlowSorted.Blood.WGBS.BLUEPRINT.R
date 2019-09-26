@@ -10,7 +10,7 @@
 #' were downloaded and converted to HDF5 files. Data 
 #' are available on ExperimentHub as a data package.
 #' 
-#' The BSseq object was created using 
+#' The HDF5 files were created using 
 #' the files: 
 #'      /inst/scripts/bp-01-create-data-object.R
 #'      /inst/scripts/bp-02-download-data.sh
@@ -24,6 +24,12 @@
 #' 
 #' @import bsseq
 #' @import ExperimentHub
+#' @import S4Vectors 
+#' @import HDF5Array 
+#' @import SummarizedExperiment
+#' @import bsseq
+#' 
+#' @export
 #' 
 #' @rdname FlowSorted.Blood.WGBS.BLUEPRINT
 #' 
@@ -34,10 +40,35 @@
 #' dim(fs_wgbs)
 #' 
 FlowSorted.Blood.WGBS.BLUEPRINT <- function()
-  {
-      ## Download a serialized BSseq object from ExperimentHub
-      hub <- ExperimentHub()
-      version <- "v1.0.0"
-      base <- file.path("FlowSorted.Blood.WGBS.BLUEPRINT", version, "files_bsseq_hdf5_col")
-      loadHDF5SummarizedExperiment(base)
+{
+  hub <- ExperimentHub()
+  version <- "v1.0.0"
+  base <- file.path("FlowSorted.Blood.WGBS.BLUEPRINT", version, 
+                    "blueprint_blood")
+  # myfiles <- query(eh, "FlowSorted.Blood.WGBS.BLUEPRINT")
+
+  rdatapath <- paste0(base, "_gr.RDS")
+  gr_object <- readRDS(rdatapath)
+  # gr_object <- query(hub, rdatapath)[[1]]
+  # gr_object <- eh[["some_EH_ID"]]
+  
+  rdatapath <- paste0(base, "_colData.RDS")
+  col_data <- readRDS(rdatapath)
+  # colData <- query(hub, rdatapath)[[1]]
+  # colData <- eh[["another_EH_ID"]] 
+  
+  rdatapath <- paste0(base, ".h5")
+  # h5file <- query(hub, rdatapath)[[1]]
+  # h5file <-eh[["some_other_EH_ID"]]
+  h5file <- rdatapath
+
+  hdf5_cov <- HDF5Array(filepath = h5file, name = "cov")
+  hdf5_meth <- HDF5Array(filepath =  h5file, name = "meth")
+
+  se <- SummarizedExperiment(list(M=hdf5_meth, Cov=hdf5_cov),
+                             rowRanges=gr_object,
+                             colData=DataFrame(row.names=col_data$sample_name))
+  bs <- new2("BSseq", se, check=FALSE)
+  colData(bs) <- DataFrame(col_data)
+  bs
 }

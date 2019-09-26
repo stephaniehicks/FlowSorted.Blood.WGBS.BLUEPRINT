@@ -44,10 +44,11 @@ We use the `FlowSorted.Blood.WGBS.BLUEPRINT()` function to
 download the relevant files from _Bioconductor_'s ExperimentHub 
 web resource. This includes the HDF5 files containing the 
 number of methylated reads (`M`) and total reads (`Cov`), as 
-well as the metadata on the rows (CpGs) and columns (samples). 
-The output is a single `BSseq` object from the `r Biocpkg("bsseq")` 
-package. This is equivalent to a `SummarizedExperiment` class but
-with a number of features specific to DNA methylation data.
+well as the genomic locations of the CpGs and metadata on the 
+columns (samples). The output is a single `BSseq` object 
+from the `r Biocpkg("bsseq")` package. This is equivalent 
+to a `SummarizedExperiment` class but with a number of 
+features specific to DNA methylation data.
 
 ```{r}
 library(FlowSorted.Blood.WGBS.BLUEPRINT)

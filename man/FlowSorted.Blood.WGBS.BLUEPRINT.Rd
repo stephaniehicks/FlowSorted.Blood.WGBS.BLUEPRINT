@@ -9,7 +9,7 @@ blood cell populations from BLUEPRINT}
 approximately 29 million CpGs (or 29039352 CpGs
 to be exact).}
 \usage{
-FlowSorted.Blood.WGBS.BLUEPRINT(preloaded = TRUE)
+FlowSorted.Blood.WGBS.BLUEPRINT()
 }
 \description{
 This package measures the DNA methylation of
@@ -19,7 +19,7 @@ bisulfite-sequencing platform (WGBS). BigWig files
 were downloaded and converted to HDF5 files. Data 
 are available on ExperimentHub as a data package.
 
-The BSseq object was created using 
+The HDF5 files were created using 
 the files: 
      /inst/scripts/bp-01-create-data-object.R
      /inst/scripts/bp-02-download-data.sh
@@ -28,6 +28,7 @@ and the object downloaded from ExperimentHub.
 }
 \examples{
 library(ExperimentHub)
+library(FlowSorted.Blood.WGBS.BLUEPRINT)
 fs_wgbs <- FlowSorted.Blood.WGBS.BLUEPRINT()
 dim(fs_wgbs)
 
